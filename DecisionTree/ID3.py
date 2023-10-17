@@ -40,9 +40,7 @@ class ID3:
         self.__vtarget = set([d[self.__target_idx] for d in data])
         self.__vattr = { attr: set([d[self.__col_idx[attr]] for d in data]) for attr in descriptor.get('categorical',[]) }
         # Copies self data, calls preprocessors' constructors, applies to data
-        data = [[(float(d) if self.__columns[i] in self.__numerical else d) for i,d in enumerate(row)] for row in data]
         self.__preprocessors = [p for p in preprocess]
-        data = self.__preprocess(data,labeled=True)
         # Construct tree
         root = self.__build_leaf(None,data)
         self.__root = self.__split_node(root, (self.__categorical | self.__numerical) - set([descriptor['target']]))
@@ -57,10 +55,10 @@ class ID3:
         return result
     
     # Calls the preprocessors sequentially on a single sample or matrix-like structure and returns the corresponding sample or samples
-    def __preprocess(self,data,labeled):
+    def __preprocess(self,data):
         r = data if type(data[0]) == list else [data]
         for p in self.__preprocessors:
-            r = p(r,labeled)
+            r = p(r)
         return r
     
     # Weight is number of elements in data
@@ -132,7 +130,7 @@ class ID3:
     def __call__(self, x):
         pred = []
         for item in x:
-            it = self.__preprocess(item,labeled=False)
+            it = self.__preprocess(item)
             value = {v: 0 for v in self.__vtarget}
             for i in it:
                 node = self.__root

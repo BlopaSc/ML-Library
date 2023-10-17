@@ -9,7 +9,10 @@ import sys
 
 from ID3 import ID3
 sys.path.append("../Preprocess")
+from CSVLoader import CSVLoader
 from ReplaceMissingWithMajority import ReplaceMissingWithMajority
+from DiscretizeNumericalAtMedian import DiscretizeNumericalAtMedian
+
 
 # EDIT AS NECESSARY
 car_train_path = 'car/train.csv'
@@ -17,13 +20,6 @@ car_test_path = 'car/test.csv'
 
 bank_train_path = 'bank/train.csv'
 bank_test_path = 'bank/test.csv'
-
-def load_csv(path):
-    data = []
-    with open(path, 'r') as f:
-        for line in f:
-            data.append([i for i in line.strip().split(',') if i])
-    return data
 
 car_descriptor = {
     'target': 'label',
@@ -53,8 +49,8 @@ if __name__ == '__main__':
     space = ' & '
     end = ' \\\\'
     
-    car_train = load_csv(car_train_path)
-    car_test = load_csv(car_test_path)
+    car_train = CSVLoader(car_train_path)
+    car_test = CSVLoader(car_test_path)
     
     print("Car example")
     for i in range(1,6+1):
@@ -72,32 +68,36 @@ if __name__ == '__main__':
     y = tree_car(car_test)
     
     print("Bank example with unknown as attribute value")
-    bank_train = load_csv(bank_train_path)
-    bank_test = load_csv(bank_test_path)
+    bank_train = CSVLoader(bank_train_path,bank_descriptor)
+    bank_test = CSVLoader(bank_test_path,bank_descriptor)
+    
+    discretizer = DiscretizeNumericalAtMedian(bank_train, bank_descriptor)
+    
+    bank_train = discretizer(bank_train, bank_descriptor)
+    
     for i in range(1,16+1):
         res = []
         print(f"{i}", end='')
         for j in ['information_gain', 'gini_index', 'majority_error']:
-            tree_bank = ID3( bank_train, bank_descriptor, criterion = j, max_depth = i )
+            tree_bank = ID3( bank_train, bank_descriptor, criterion = j, max_depth = i, preprocess=[discretizer] )
             _,acctrain =  tree_bank.predict_and_error(bank_train)
             _,acctest = tree_bank.predict_and_error(bank_test)
             print("{}{:.4f}{}{:.4f}".format(space, 1-sum(acctrain)/len(acctrain), space, 1-sum(acctest)/len(acctest)),end='')
         print(f"{end}")
         
     replace = ReplaceMissingWithMajority(bank_train, bank_descriptor, missing = 'unknown')
+    bank_train2 = replace(bank_train)
     
     print("Bank example without unknown as attribute value")
     for i in range(1,16+1):
         res = []
         print(f"{i}", end='')
         for j in ['information_gain', 'gini_index', 'majority_error']:
-            tree_bank = ID3( bank_train, bank_descriptor, criterion = j, max_depth = i, preprocess=[replace])
+            tree_bank = ID3( bank_train2 , bank_descriptor, criterion = j, max_depth = i, preprocess=[discretizer,replace])
             _,acctrain =  tree_bank.predict_and_error(bank_train)
             _,acctest = tree_bank.predict_and_error(bank_test)
             print("{}{:.4f}{}{:.4f}".format(space, 1-sum(acctrain)/len(acctrain), space, 1-sum(acctest)/len(acctest)),end='')
         print(f"{end}")
-        
-        
         
         
         

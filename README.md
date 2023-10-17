@@ -23,20 +23,40 @@ All structures perform their function in two ways:
 
 ## Preprocessing
 
+### CSVLoader
+
+This preprocessor method loads the data from a CSV file. Returns a matrix-like object with the data.
+
+**Parameters:**
+
+1. `path`: String with the path of the file to load.
+2. `descriptor`: (Optional) Specifies a descriptor for the data, numerical data will be loaded as float values.
+3. `separator`: (Optional) Specifies the separator used in the file to separate the data. `,` by default.
+
 ### Replace Missing With Majority
 
 This preprocessor takes a dataset and replaces its missing values with those of the majority attribute for data samples that share its label (for labeled data) or just the majority attribute for that column (for unlabeled data).
 
 **Constructor parameters:**
 
-1. `data`: Original data to use to construct the preprocessor.
+1. `data`: Original data to use to construct the preprocessor. Data is not modified, just used as reference for future transformations.
 2. `descriptor`: Must contain at least `target`, `columns` and `categorical`. Optional: `weight`. 
 3. `missing`: Value representing the missing value in the data.
 4. `columns`: (Optional) List which specifies only certain columns to which to apply the preprocessing. If left empty then the processor will apply to all categorical columns.
 
 **Call:**
 
-The preprocessor is called with a matrix-like `data` parameter which follows the original `descriptor` specifications and a secondary `labeled` boolean parameter to specify if the data is labeled or not.
+The preprocessor is called with a matrix-like `data` parameter which follows the original `descriptor` specifications and a secondary `labeled` boolean parameter to specify if the data is labeled or not (`False` by default).
+
+### DiscretizeNumericalAtMedian
+
+This preprocessor takes a dataset and discritizes the numerical values within it into `<=` and `>` with respect to the median.
+
+**Constructor parameters:**
+
+1. `data`: Original data to use to construct the preprocessor. Data is not modified, just used as reference for future transformations.
+2. `descriptor`: Must contain at least `columns` and `numerical`. Optional: `weight`.
+3. `columns`: (Optional) List which specifies only certain columns to which to apply the preprocessing. If left empty then the processor will apply to all numerical columns.
 
 ## Decision Trees
 
@@ -46,11 +66,11 @@ Allows the classification of data through the construction of a tree.
 
 **Constructor parameters:**
 
-1. `data`: Original data to use to construct the tree.
-2. `descriptor`: Must contain at least `target`, `columns`, `categorical` and `numerical`. Optioanl: `weight`.
+1. `data`: Original data to use to construct the tree, this data must have passed through the appropriate pre-processing.
+2. `descriptor`: Must contain at least `target`, `columns`, `categorical` and `numerical`. Optional: `weight`. The descriptor must have passed through the appropriate pre-processing.
 3. `criterion`: (Optional) May be `information_gain`/`entropy` (default), `gini_index`/`gini` or `majority_error`/`majority`.
 4. `max_depth`: (Optional) Specified the maximum depth of the tree, if zero then it does not has a maximum depth (0 by default).
-5. `preprocess`: (Optional) List of preprocessor objects to be applied to the data before construction and prediction using this tree.
+5. `preprocess`: (Optional) List of preprocessor objects to be applied to the data before prediction in this tree. They will be applied in the given order, only the data parameter is sent to the call so preprocessors must assume unlabeled data.
 
 **Call:**
 

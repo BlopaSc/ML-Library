@@ -31,15 +31,12 @@ class ReplaceMissingWithMajority:
             self.__majority_total[col] = max(zip(self.__counts_total[col].values(),self.__counts_total[col].keys()))[1]
     
     # Executes the preprocessing algorithm corresponding to either the train or test data
-    def __call__(self, data, labeled):
+    def __call__(self, data, labeled=False):
         result = []
         if labeled:
             for d in data:
                 nd = [item for item in d]
-                # print(d)
-                # print(nd)
                 for col,idx in self.__columns:
-                    # print(col,idx)
                     if nd[idx] == self.__missing:
                         nd[idx] = self.__majority_label[col][nd[self.__target_idx]]
                 result.append(nd)
