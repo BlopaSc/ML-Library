@@ -7,7 +7,7 @@ Created on Sun Oct 15 03:41:29 2023
 
 import sys
 
-from ID3_new import ID3
+from ID3 import ID3
 sys.path.append("../Preprocess")
 from ReplaceMissingWithMajority import ReplaceMissingWithMajority
 
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         
     t  = ID3( example_data, example_descriptor, criterion='gini_index', max_depth=0)
     
-    y = tree_car.predict(car_test)
+    y = tree_car(car_test)
     
     print("Bank example with unknown as attribute value")
     bank_train = load_csv(bank_train_path)

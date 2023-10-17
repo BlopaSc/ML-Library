@@ -15,7 +15,7 @@ class ID3:
         # 'numerical': set of names of numerical columns to use as attributes
         # 'weight': (optional) name of the column used to weight the data
     
-    def __init__(self, data, descriptor, criterion='entropy', max_depth=1, preprocess=[]):
+    def __init__(self, data, descriptor, criterion='entropy', max_depth=0, preprocess=[]):
         # Store parameters
         if criterion=='information_gain' or criterion=='entropy':
             self.__criterion = self.__entropy
@@ -129,7 +129,7 @@ class ID3:
         return (1 - (node['count'][node['label']]/n)) if n else 0
     
     # x is a matrix-like structure of the items to predict, returns an array of labels
-    def predict(self, x):
+    def __call__(self, x):
         pred = []
         for item in x:
             it = self.__preprocess(item,labeled=False)
@@ -156,6 +156,6 @@ class ID3:
     
     # x is a matrix-like structure of the items to predict but also includes labels, returns an array of labels and an array of true/false depending on whether the prediction was correct
     def predict_and_error(self,x):
-        pred = self.predict(x)
+        pred = self(x)
         correct = [p==y[self.__target_idx] for p,y in zip(pred,x)]
         return (pred,correct)
