@@ -29,7 +29,7 @@ class ID3:
         self.__col_idx = { col : self.__columns.index(col) for col in self.__columns }
         # Quick access to weight and specify weight function
         self.__weight = self.__sum if descriptor.get('weight') else self.__count
-        self.__weight_idx = self.columns.index(descriptor.get('weight')) if descriptor.get('weight') else None
+        self.__weight_idx = self.__columns.index(descriptor.get('weight')) if descriptor.get('weight') else None
         # Convert to sets if needed
         self.__categorical = set(descriptor.get('categorical',[]))
         self.__numerical = set(descriptor.get('numerical',[]))
@@ -67,7 +67,7 @@ class ID3:
     
     # Weight is sum of weight values in data
     def __sum(self,data):
-        return sum(d[self.weight_idx] for d in data)
+        return sum(d[self.__weight_idx] for d in data)
     
     # Builds a leaf node
     def __build_leaf(self, parent, data):
@@ -147,7 +147,9 @@ class ID3:
                         print("Cat:", self.__categorical)
                         print("Num:", self.__numerical)
                         print(f'UNKNOWN ATTRIBUTE: "{node["attr"]}"')
-                value[node['label']] += self.__weight( [i] )
+                # Note: weighted results should be handed by the user
+                # value[node['label']] += self.__weight( [i] )
+                value[node['label']] += 1
             label = max(zip(value.values(),value.keys()))[1]
             pred.append(label)
         return pred
