@@ -2,6 +2,10 @@ This is a machine learning library developed by Pablo Sauma for CS5350/6350 in U
 
 # Usage
 
+## Execution
+
+For the purpose on the assignments, please execute the `run.sh` available in the root directory, I will update it for each assignement and all the pathing should work.
+
 ## Generalities
 
 ### Data Descriptor
@@ -58,6 +62,16 @@ This preprocessor takes a dataset and discritizes the numerical values within it
 2. `descriptor`: Must contain at least `columns` and `numerical`. Optional: `weight`.
 3. `columns`: (Optional) List which specifies only certain columns to which to apply the preprocessing. If left empty then the processor will apply to all numerical columns.
 
+## Postprocessing
+
+### Metrics
+
+`get_y(x, descriptor)`: Extracts the `target` columns from the dataset `x` into a single array.
+
+`accuracy(y, prediction)`: Calculates the accuracy of prediction for a given target array `y` and a prediction array `prediction`.
+
+`square_error(y, prediction)`: Calculates the square error of the predictions for a given target array `y` and a prediction array `prediction`.
+
 ## Decision Trees
 
 ### ID3
@@ -69,13 +83,30 @@ Allows the classification of data through the construction of a tree.
 1. `data`: Original data to use to construct the tree, this data must have passed through the appropriate pre-processing.
 2. `descriptor`: Must contain at least `target`, `columns`, `categorical` and `numerical`. Optional: `weight`. The descriptor must have passed through the appropriate pre-processing.
 3. `criterion`: (Optional) May be `information_gain`/`entropy` (default), `gini_index`/`gini` or `majority_error`/`majority`.
-4. `max_depth`: (Optional) Specified the maximum depth of the tree, if zero then it does not has a maximum depth (0 by default).
+4. `max_depth`: (Optional, default: 0) Specified the maximum depth of the tree, if zero then it does not has a maximum depth.
 5. `preprocess`: (Optional) List of preprocessor objects to be applied to the data before prediction in this tree. They will be applied in the given order, only the data parameter is sent to the call so preprocessors must assume unlabeled data.
 
 **Call:**
 
 The decision tree is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with a label for each of the samples provided in their respective order.
 
+## Linear Regression
 
+### LMS
 
+Allows performing linear regression on data.
+
+**Constructor parameters:**
+
+1. `data`: Original data to use to construct the regression, this data must have passed through the appropriate pre-processing.
+2. `descriptor`: Must contain at least `target`, `columns` and `numerical`. If `numerical` is missing, all the columns will be assumed as numerical. The descriptor must have passed through the appropriate pre-processing.
+3. `lr`: Learning rate to utilize during the regression.
+4. `max_iters`: (Optional, default: 0) Maximum numbers of iterations to perform for weight adjustment. If 0 then it does not has a maximum number of iterations.
+5. `threshold`: (Optional, default: 1e-6) Threshold for the minimum change of the weights under which the algorithm stops as it is considered to have converged.
+6. `strategy`: (Optional, default: batch) Specifies whether to use ``batch'' or ``stochastic'' gradient descent.
+7. `seed`: (Optional, default: None) Allows the specification of a randomness seed for reproducibility when using stochastic gradient descent.
+
+**Call:**
+
+The LMS is called with a matrix-like `data` parameter of samples to be regressed. The function returns an array with the calculated value for each of the samples provided in their respective order.
 

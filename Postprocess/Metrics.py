@@ -9,3 +9,6 @@ def get_y(x, descriptor):
 
 def accuracy(y, prediction):
     return sum( y[i]==prediction[i] for i in range(len(y)) )/len(y)
+
+def square_error(y, prediction):
+    return sum( (y[i]-prediction[i])**2 for i in range(len(y)) )/2
