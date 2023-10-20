@@ -12,7 +12,6 @@ import ID3
 
 class AdaBoost:
     def __init__(self, data, descriptor, T, treeCls = ID3.ID3, **kwargs):
-        self.__T = T
         self.__treeCls = treeCls
         self.__kwargs = kwargs
         self.__target_idx = descriptor['columns'].index(descriptor['target'])
@@ -63,3 +62,6 @@ class AdaBoost:
             for i in range(len(data)):
                 votes[i][prediction[i]] += power
         return [max(zip(value.values(),value.keys()))[1] for value in votes]
+
+    def predict_with_stump(self, data, i):
+        return self.__classifiers[i](data)

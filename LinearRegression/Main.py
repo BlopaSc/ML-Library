@@ -72,3 +72,5 @@ if __name__ == '__main__':
     print("\nAnalytical result:")
     print("Weights:", [np.array(lms.w)[i][0] for i in range(lms.w.shape[0]) ])
     
+    
+    

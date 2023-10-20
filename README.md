@@ -4,7 +4,7 @@ This is a machine learning library developed by Pablo Sauma for CS5350/6350 in U
 
 ## Execution
 
-For the purpose on the assignments, please execute the `run.sh` available in the root directory, I will update it for each assignement and all the pathing should work.
+For the purpose on the assignments, please execute the `bash run.sh` available in the root directory, I will update it for each assignement and all the pathing should work.
 
 ## Generalities
 
@@ -89,6 +89,42 @@ Allows the classification of data through the construction of a tree.
 **Call:**
 
 The decision tree is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with a label for each of the samples provided in their respective order.
+
+## Ensemble Learning
+
+### AdaBoost
+
+Allows the classification of data through ensamble learning with AdaBoost.
+
+**Constructor parameters:**
+
+1. `data`: Original data to use to construct the tree, this data must have passed through the appropriate pre-processing.
+2. `descriptor`: Must contain at least `target`, `columns`, `categorical` and `numerical`.
+3. `T`: Number of decision trees to use as part of this ensamble.
+4. `treeCls`: (Optional, default: ID3) Class of the trees to use as part of the ensamble.
+5 `**kwargs`: (Optional) Additional parameters to send to the trees of the ensamble when constructing them.
+
+**Call:**
+
+The ensamble is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with a label for each of the samples provided in their respective order.
+
+### Bagging
+
+Allows the classification of data through ensamble learning with Bagging.
+
+**Constructor parameters:**
+
+1. `data`: Original data to use to construct the tree, this data must have passed through the appropriate pre-processing.
+2. `descriptor`: Must contain at least `target`, `columns`, `categorical` and `numerical`.
+3. `T`: Number of decision trees to use as part of this ensamble.
+4. `m`: Number of data samples to sample (with replacement) from the dataset for each of the trees in the ensamble.
+5. `seed`: (Optional, default: None) Seed value for the randomness used to sample from the dataset, allows reproducibility of experiments.
+6. `treeCls`: (Optional, default: ID3) Class of the trees to use as part of the ensamble.
+7 `**kwargs`: (Optional) Additional parameters to send to the trees of the ensamble when constructing them.
+
+**Call:**
+
+The ensamble is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with a label for each of the samples provided in their respective order.
 
 ## Linear Regression
 
