@@ -85,6 +85,8 @@ Allows the classification of data through the construction of a tree.
 3. `criterion`: (Optional) May be `information_gain`/`entropy` (default), `gini_index`/`gini` or `majority_error`/`majority`.
 4. `max_depth`: (Optional, default: 0) Specified the maximum depth of the tree, if zero then it does not has a maximum depth.
 5. `preprocess`: (Optional) List of preprocessor objects to be applied to the data before prediction in this tree. They will be applied in the given order, only the data parameter is sent to the call so preprocessors must assume unlabeled data.
+6. `subsample_attributes`: (Optional, default: 0) Number of attributes to subsample before deciding the best split in each node. Useful for Random Forest. If 0 then it does not perform subsampling.
+7. `seed`: (Optional, default: None) Seed to utilize for the randomness of the subsampling of attributes. Allows reproducibility of experiments.
 
 **Call:**
 
@@ -121,6 +123,25 @@ Allows the classification of data through ensamble learning with Bagging.
 5. `seed`: (Optional, default: None) Seed value for the randomness used to sample from the dataset, allows reproducibility of experiments.
 6. `treeCls`: (Optional, default: ID3) Class of the trees to use as part of the ensamble.
 7 `**kwargs`: (Optional) Additional parameters to send to the trees of the ensamble when constructing them.
+
+**Call:**
+
+The ensamble is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with a label for each of the samples provided in their respective order.
+
+### Random Forest
+
+Allows the classification of data through ensamble learning with Random Forest.
+
+**Constructor parameters:**
+
+1. `data`: Original data to use to construct the tree, this data must have passed through the appropriate pre-processing.
+2. `descriptor`: Must contain at least `target`, `columns`, `categorical` and `numerical`.
+3. `T`: Number of decision trees to use as part of this ensamble.
+4. `subsample_attributes`: Number of attributes/feaures to subsample on each node split of the tree construction.
+5. `m`: Number of data samples to sample (with replacement) from the dataset for each of the trees in the ensamble.
+6. `seed`: (Optional, default: None) Seed value for the randomness used to sample from the dataset, allows reproducibility of experiments.
+7. `treeCls`: (Optional, default: ID3) Class of the trees to use as part of the ensamble.
+8 `**kwargs`: (Optional) Additional parameters to send to the trees of the ensamble when constructing them.
 
 **Call:**
 

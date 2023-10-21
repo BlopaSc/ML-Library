@@ -4,8 +4,7 @@
 """
 
 import math
-
-# TODO: Preprocessing convert numerical to categorical, fill nulls with desired technique, calculate weights
+import random
 
 class ID3:
     # Descriptor includes:
@@ -15,7 +14,10 @@ class ID3:
         # 'numerical': set of names of numerical columns to use as attributes
         # 'weight': (optional) name of the column used to weight the data
     
-    def __init__(self, data, descriptor, criterion='entropy', max_depth=0, preprocess=[]):
+    def __init__(self, data, descriptor, criterion='entropy', max_depth=0, preprocess=[], subsample_attributes=0, seed=None):
+        self.prng = random.Random()
+        self.prng.seed(seed)
+        self.subsample_attributes = subsample_attributes
         # Store parameters
         if criterion=='information_gain' or criterion=='entropy':
             self.__criterion = self.__entropy
@@ -87,8 +89,9 @@ class ID3:
         children = []
         if (node['depth']<self.__max_depth or self.__max_depth<=0) and data and node['criterion']!=0:
             # Split
+            subattributes = set(self.prng.sample(list(attributes), min(self.subsample_attributes, len(attributes)))) if self.subsample_attributes else attributes
             best_ig,best_attr,best_value = 0,None,None
-            for attr in attributes:
+            for attr in subattributes:
                 attr_idx = self.__col_idx[attr]
                 if attr in self.__categorical:
                     # Categorical

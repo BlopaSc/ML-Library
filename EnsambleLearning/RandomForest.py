@@ -10,12 +10,14 @@ import random
 sys.path.append("../DecisionTree")
 import ID3
 
-class Bagging:
-    def __init__(self, data, descriptor, T, m=None, seed=None, treeCls = ID3.ID3, **kwargs):
+class RandomForest:
+    def __init__(self, data, descriptor, T, subsample_attributes, m=None, seed=None, treeCls = ID3.ID3, **kwargs):
         self.__prng = random.Random()
         self.__prng.seed(seed)
+        self.__seed = seed
         self.__data = data
         self.__descriptor = descriptor
+        self.__subsample_attributes = subsample_attributes
         self.__m = m if m else len(data)
         self.__treeCls = treeCls
         self.__kwargs = kwargs
@@ -25,11 +27,11 @@ class Bagging:
         self.__classifiers = []
         self.__T = 0
         self.modify_T(T)
-        
+
     def modify_T(self, T):
         while T > self.__T:
             data = self.__prng.choices(self.__data, k=self.__m)
-            classifier = self.__treeCls(data, self.__descriptor, **self.__kwargs)
+            classifier = self.__treeCls(data, self.__descriptor, subsample_attributes=self.__subsample_attributes, seed=self.__seed*self.__T if self.__seed else None, **self.__kwargs)
             # print(sum(data[i][target_idx]==predict[i] for i in range(len(data)) ))
             self.__classifiers.append(classifier)
             self.__T += 1
@@ -44,4 +46,3 @@ class Bagging:
     
     def predict_with_tree(self, data, i):
         return self.__classifiers[i](data)
-    
