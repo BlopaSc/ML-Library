@@ -61,3 +61,8 @@ def swap_columns(data, descriptor, column1, column2):
     new_descriptor['columns'][col1_idx] = new_descriptor['columns'][col2_idx]
     new_descriptor['columns'][col2_idx] = tmp
     return new_data,new_descriptor
+
+def replace_value(data, descriptor, column, value, newvalue):
+    column_idx = descriptor['columns'].index(column)
+    return [[(newvalue if (i==column_idx and d==value) else d) for i,d in enumerate(row)] for row in data]
+    

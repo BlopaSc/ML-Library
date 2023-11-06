@@ -167,3 +167,50 @@ Allows performing linear regression on data.
 
 The LMS is called with a matrix-like `data` parameter of samples to be regressed. The function returns an array with the calculated value for each of the samples provided in their respective order.
 
+## Perceptron
+
+### Perceptron
+
+Allows performing the standard perceptron algorithm on data.
+
+**Constructor parameters:**
+
+1. `data`: Original data to use to construct the perceptron, this data must have passed through the appropriate pre-processing. Target data is expected to be either 1 or -1.
+2. `descriptor`: Must contain at least `target`, `columns` and `numerical`. If `numerical` is missing, all the columns will be assumed as numerical.
+3. `lr`: (Optional, default: 1) Learning rate to utilize during the regression. 
+4. `max_iters`: (Optional, default: 10) Maximum numbers of iterations to perform for weight adjustment.
+5. `seed`: (Optional, default: None) Allows the specification of a randomness seed for reproducibility.
+
+**Call:**
+
+The Perceptron is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with the calculated value for each of the samples provided in their respective order.
+
+### Voted Perceptron
+
+Allows performing the voted perceptron algorithm on data.
+
+**Constructor parameters:**
+
+1. `data`: Original data to use to construct the perceptron, this data must have passed through the appropriate pre-processing. Target data is expected to be either 1 or -1.
+2. `descriptor`: Must contain at least `target`, `columns` and `numerical`. If `numerical` is missing, all the columns will be assumed as numerical.
+3. `lr`: (Optional, default: 1) Learning rate to utilize during the regression. 
+4. `max_iters`: (Optional, default: 10) Maximum numbers of iterations to perform for weight adjustment.
+
+**Call:**
+
+The Voted Perceptron is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with the calculated value for each of the samples provided in their respective order.
+
+### Average Perceptron
+
+Allows performing the average perceptron algorithm on data.
+
+**Constructor parameters:**
+
+1. `data`: Original data to use to construct the perceptron, this data must have passed through the appropriate pre-processing. Target data is expected to be either 1 or -1.
+2. `descriptor`: Must contain at least `target`, `columns` and `numerical`. If `numerical` is missing, all the columns will be assumed as numerical.
+3. `lr`: (Optional, default: 1) Learning rate to utilize during the regression. 
+4. `max_iters`: (Optional, default: 10) Maximum numbers of iterations to perform for weight adjustment.
+
+**Call:**
+
+The Average Perceptron is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with the calculated value for each of the samples provided in their respective order.
