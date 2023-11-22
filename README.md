@@ -214,3 +214,40 @@ Allows performing the average perceptron algorithm on data.
 **Call:**
 
 The Average Perceptron is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with the calculated value for each of the samples provided in their respective order.
+
+## SVM
+
+### SVMSGD
+
+Allows performing a support vector machine through stochastic gradient descent on data.
+
+** Constructor parameters:**
+
+1. `data`: Original data to use to construct the perceptron, this data must have passed through the appropriate pre-processing. Target data is expected to be either 1 or -1.
+2. `descriptor`: Must contain at least `target`, `columns` and `numerical`. If `numerical` is missing, all the columns will be assumed as numerical.
+3. `C`: balance constant between slack variables and the weights of the vector.
+4. `lr`: (Optional, default: 1) Learning rate to utilize during the regression.
+5. `lr_function`: (Optional, default: identity) Learning rate schedule to utilize, can use identity o decay functions.
+6. `max_iters`: (Optional, default: 10) Maximum numbers of iterations to perform for weight adjustment.
+7. `seed`: (Optional, default: None) Allows the specification of a randomness seed for reproducibility.
+8. `kwargs`: (Optional) Any additional parameters to send to the learning rate schedule function, if decay could include `gamma` and `a`.
+
+**Call:**
+
+The SVMSGD is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with the calculated value for each of the samples provided in their respective order.
+
+### SVM
+
+Allows performing a support vector machine through dual form on data.
+
+** Constructor parameters:**
+
+1. `data`: Original data to use to construct the perceptron, this data must have passed through the appropriate pre-processing. Target data is expected to be either 1 or -1.
+2. `descriptor`: Must contain at least `target`, `columns` and `numerical`. If `numerical` is missing, all the columns will be assumed as numerical.
+3. `C`: balance constant between slack variables and the weights of the vector.
+4. `kernel`: (Optional, default: `none`) Kernel function to utilize as part of the SVM, can be `none` or `gaussian`.
+5. `kwargs`: (Optional) Any additional parameters to send to the kernel function, if gaussian then should include `gamma`.
+
+**Call:**
+
+The SVM is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with the calculated value for each of the samples provided in their respective order.
