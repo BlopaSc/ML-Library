@@ -251,3 +251,25 @@ Allows performing a support vector machine through dual form on data.
 **Call:**
 
 The SVM is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with the calculated value for each of the samples provided in their respective order.
+
+## Neural Network
+
+### NeuralNetwork
+
+Allows the customizable design of a neural network architecture and training on data.
+
+** Constructor parameters:**
+
+1. `data`: Original data to use to construct the perceptron, this data must have passed through the appropriate pre-processing. Target data is expected to be either 1 or -1.
+2. `descriptor`: Must contain at least `target`, `columns` and `numerical`. If `numerical` is missing, all the columns will be assumed as numerical.
+3. `layers`: A list containing the number of neurons in each layer of the network, including the input and output layers.
+4. `function`: A string specifying the activation function used in between each pair of layers. `s` for sigmoid, `n` for none.
+5. `lr`: Initial learning rate for the algorithm.
+6. `d_decay`: Decay value for the update of the learning rate.
+7. `max_iters`: (Optional, default: 0) Maximum numbers of iterations to perform for weight adjustment.
+8. `seed`: (Optional, default: None) Allows the specification of a randomness seed for reproducibility.
+9. `weights`: (Optional, default: None) Specifies the initial weight matrixes to use for the neural network, if none the weights are initialized with random gaussian values, if `zero` then the weights are initialized at 0.
+
+**Call:**
+
+The NeuralNetwork is called with a matrix-like `data` parameter of samples to be classified. The function returns an array with the calculated value for each of the samples provided in their respective order.
